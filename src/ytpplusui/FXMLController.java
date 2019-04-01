@@ -1,7 +1,9 @@
 package ytpplusui;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.net.URI;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -175,13 +177,60 @@ public class FXMLController {
     }
 
     @FXML
-    void goNow(ActionEvent event) {
+    void goNow(ActionEvent event) throws Exception {
         if (sourceList.isEmpty()) {
             alert("You need some sources...");
             return;
         }
-        YTPGenerator generator = new YTPGenerator(TEMP + "tempoutput.mp4");
-        generator.toolBox.FFMPEG = "";
+        Thread vidThread = new Thread() {
+            public void run() {
+                try {
+                System.out.println("poop");
+                YTPGenerator generator = new YTPGenerator(TEMP + "tempoutput.mp4");
+                System.out.println("poop2");
+                generator.toolBox.FFMPEG = "\"" + tfFFMPEG.getText() + "\"";
+                generator.toolBox.FFPROBE = "\"" + tfFFPROBE.getText() + "\"";
+                generator.toolBox.MAGICK = "\"" + tfMAGICK.getText() + "\"";
+                System.out.println("poop3");
+                generator.toolBox.TEMP = "\"" + tfTEMP.getText() + "job_" + System.currentTimeMillis() + "/\"";
+                new File(generator.toolBox.TEMP).mkdir();
+                generator.toolBox.SOUNDS = "\"" + tfSOUNDS.getText() + "\"";
+                generator.toolBox.MUSIC = "\"" + tfMUSIC.getText() + "\"";
+                generator.toolBox.RESOURCES = "\"" + tfRESOURCES.getText() + "\"";
+                generator.toolBox.SOURCES = "\"" + tfSOURCES.getText() + "\"";
+System.out.println("poop4");
+                generator.effect1 = cbEffect1.isSelected();
+                generator.effect2 = cbEffect2.isSelected();
+                generator.effect3 = cbEffect3.isSelected();
+                generator.effect4 = cbEffect4.isSelected();
+                generator.effect5 = cbEffect5.isSelected();
+                generator.effect6 = cbEffect6.isSelected();
+                generator.effect7 = cbEffect7.isSelected();
+                generator.effect8 = cbEffect8.isSelected();
+                generator.effect9 = cbEffect9.isSelected();
+                generator.effect10 = cbEffect10.isSelected();
+                generator.effect11 = cbEffect11.isSelected();
+                System.out.println("poop5");
+                for (String source : sourceList) {
+                    generator.addSource("\"" + source + "\"");
+                }
+                System.out.println("poop6");
+                generator.setMaxClips(Integer.parseInt(tfClipCount.getText()));
+                generator.setMaxDuration(Double.parseDouble(tfMaxStream.getText()));
+                generator.setMinDuration(Double.parseDouble(tfMinStream.getText()));
+                System.out.println("poop7");
+                generator.go();
+                System.out.println("poop8");
+                while (!generator.done) {
+                    barProgress.setProgress(generator.doneCount);
+                }
+                
+                } catch (Exception ex) {
+                   alert("Error:\n\n" + ex);
+                }
+            }
+        };
+        vidThread.start();
     }
 
     @FXML
@@ -263,7 +312,7 @@ public class FXMLController {
         fileChooser.setInitialDirectory(LAST_BROWSED);
         File selected = fileChooser.showDialog(null);
         if (selected==null) return;
-        toChange.setText(selected.getAbsolutePath().replace('\\', '/'));
+        toChange.setText(selected.getAbsolutePath().replace('\\', '/') + "/");
         LAST_BROWSED = selected.getParentFile();
     }
 
@@ -284,7 +333,7 @@ public class FXMLController {
 
     @FXML
     void removeSource(ActionEvent event) {
-
+        sourceList.remove(listviewSourcesList.getSelectionModel().getSelectedItems().get(0));
     }
 
     @FXML
@@ -299,7 +348,11 @@ public class FXMLController {
     
     @FXML
     void openDiscord(ActionEvent event) {
-
+        try {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI("https://discord.gg/mAwQQt7"));
+        }
+        } catch (Exception ex) {} //how does that even happen
     }
     
     void alert(String message) {
