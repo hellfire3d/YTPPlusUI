@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.media.MediaView?>
+
+<AnchorPane id="AnchorPane" prefHeight="470.0" prefWidth="772.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ytpplusui.FXMLController">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="240.0" prefWidth="320.0" style="-fx-border-color: black;">
+         <effect>
+            <DropShadow />
+         </effect>
+         <children>
+            <MediaView fx:id="mediaviewVideoPlayer" fitHeight="240.0" fitWidth="320.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="347.0" layoutY="14.0" prefHeight="242.0" prefWidth="200.0" style="-fx-border-color: black;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Effect Toggles" underline="true" />
+            <CheckBox fx:id="cbEffect1" layoutX="29.0" layoutY="38.0" mnemonicParsing="false" selected="true" text="Random Sound" />
+            <CheckBox fx:id="cbEffect2" layoutX="29.0" layoutY="55.0" mnemonicParsing="false" selected="true" text="Random Sound (Mute OG)" />
+            <CheckBox fx:id="cbEffect3" layoutX="29.0" layoutY="72.0" mnemonicParsing="false" selected="true" text="Reverse Clip" />
+            <CheckBox fx:id="cbEffect4" layoutX="29.0" layoutY="89.0" mnemonicParsing="false" selected="true" text="Speed Up Clip (no pitch)" />
+            <CheckBox fx:id="cbEffect5" layoutX="29.0" layoutY="106.0" mnemonicParsing="false" selected="true" text="Slow Down Clip (no pitch)" />
+            <CheckBox fx:id="cbEffect6" layoutX="29.0" layoutY="123.0" mnemonicParsing="false" selected="true" text="Chorus Audio" />
+            <CheckBox fx:id="cbEffect7" layoutX="29.0" layoutY="140.0" mnemonicParsing="false" selected="true" text="Vibrato Audio" />
+            <CheckBox fx:id="cbEffect8" layoutX="29.0" layoutY="157.0" mnemonicParsing="false" selected="true" text="Speed Up Clip (/pitch)" />
+            <CheckBox fx:id="cbEffect9" layoutX="29.0" layoutY="174.0" mnemonicParsing="false" selected="true" text="Slow Down Clip (/pitch)" />
+            <CheckBox fx:id="cbEffect10" layoutX="29.0" layoutY="191.0" mnemonicParsing="false" selected="true" text="Dance" />
+            <CheckBox fx:id="cbEffect11" layoutX="29.0" layoutY="208.0" mnemonicParsing="false" selected="true" text="Squidward" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="btnCreate" layoutX="14.0" layoutY="415.0" mnemonicParsing="false" onAction="#goNow" prefHeight="25.0" prefWidth="240.0" text="Create Video" />
+      <TextField fx:id="tfClipCount" layoutX="286.0" layoutY="384.0" prefHeight="25.0" prefWidth="50.0" promptText="The amount of clips to snip from the source material." text="20" />
+      <TextField fx:id="tfMaxStream" layoutX="286.0" layoutY="359.0" prefHeight="25.0" prefWidth="50.0" promptText="The maximum length for a snipped clip." text="0.4" />
+      <TextField fx:id="tfMinStream" layoutX="286.0" layoutY="334.0" prefHeight="25.0" prefWidth="50.0" promptText="The minimum length for a snipped clip." text="0.2" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="86.0" layoutY="334.0" prefHeight="25.0" prefWidth="200.0" text="Min Stream Duration (in seconds): " textAlignment="RIGHT" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="86.0" layoutY="359.0" prefHeight="25.0" prefWidth="200.0" text="Max Stream Duration (in seconds): " textAlignment="RIGHT" />
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="86.0" layoutY="384.0" prefHeight="25.0" prefWidth="200.0" text="Clip count: " textAlignment="RIGHT" />
+      <ProgressBar fx:id="barProgress" layoutX="14.0" layoutY="446.0" prefHeight="16.0" prefWidth="322.0" progress="0.0" />
+      <Button fx:id="btnPlayVideo" layoutX="188.0" layoutY="262.0" mnemonicParsing="false" onAction="#playTheVideo" text="&gt;" />
+      <Button fx:id="btnPauseVideo" layoutX="166.0" layoutY="262.0" mnemonicParsing="false" onAction="#pauseTheVideo" text="||" />
+      <Button fx:id="btnRestartVideo" layoutX="138.0" layoutY="262.0" mnemonicParsing="false" onAction="#restartTheVideo" text="|&lt;" />
+      <AnchorPane layoutX="558.0" layoutY="14.0" prefHeight="448.0" prefWidth="200.0" style="-fx-border-color: black;">
+         <children>
+            <Label layoutX="14.0" layoutY="14.0" text="Configuration" underline="true" />
+            <Label layoutX="15.0" layoutY="37.0" text="ffmpeg:" underline="true" />
+            <TextField fx:id="tfFFMPEG" layoutX="19.0" layoutY="54.0" prefHeight="25.0" prefWidth="130.0" text="ffmpeg" />
+            <Label layoutX="14.0" layoutY="79.0" text="ffprobe:" underline="true" />
+            <TextField fx:id="tfFFPROBE" layoutX="19.0" layoutY="96.0" prefHeight="25.0" prefWidth="130.0" text="ffprobe" />
+            <Label layoutX="14.0" layoutY="121.0" text="magick:" underline="true" />
+            <TextField fx:id="tfMAGICK" layoutX="19.0" layoutY="138.0" prefHeight="25.0" prefWidth="130.0" text="magick" />
+            <Label layoutX="15.0" layoutY="167.0" text="temp dir:" underline="true" />
+            <TextField fx:id="tfTEMP" layoutX="19.0" layoutY="184.0" prefHeight="25.0" prefWidth="130.0" text="temp/" />
+            <Label layoutX="14.0" layoutY="209.0" text="sounds dir:" underline="true" />
+            <TextField fx:id="tfSOUNDS" layoutX="19.0" layoutY="226.0" prefHeight="25.0" prefWidth="130.0" text="sounds/" />
+            <Label layoutX="14.0" layoutY="251.0" text="music dir:" underline="true" />
+            <TextField fx:id="tfMUSIC" layoutX="19.0" layoutY="268.0" prefHeight="25.0" prefWidth="130.0" text="music/" />
+            <Label layoutX="15.0" layoutY="293.0" text="resources dir (for fx):" underline="true" />
+            <TextField fx:id="tfRESOURCES" layoutX="19.0" layoutY="310.0" prefHeight="25.0" prefWidth="130.0" text="resources/" />
+            <Button fx:id="btnBrowseFFMPEG" layoutX="152.0" layoutY="54.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseFFPROBE" layoutX="152.0" layoutY="96.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseMAGICK" layoutX="152.0" layoutY="138.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseTEMP" layoutX="152.0" layoutY="184.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseSOUNDS" layoutX="152.0" layoutY="226.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseMUSIC" layoutX="152.0" layoutY="268.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseRESOURCES" layoutX="152.0" layoutY="310.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnHelpMeConfig" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpMeConfig" prefHeight="25.0" prefWidth="28.0" text="?" />
+         </children>
+      </AnchorPane>
+      <ListView fx:id="listviewSourcesList" layoutX="347.0" layoutY="288.0" prefHeight="174.0" prefWidth="200.0" />
+      <Label layoutX="363.0" layoutY="267.0" text="Sources" underline="true" />
+      <TextField fx:id="tfSOURCES" layoutX="177.0" layoutY="308.0" prefHeight="25.0" prefWidth="130.0" text="sources/" />
+      <Button fx:id="btnBrowseSOURCES" layoutX="311.0" layoutY="308.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+      <CheckBox fx:id="cbUseTransitions" layoutX="40.0" layoutY="312.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" selected="true" text="Insert Transition Clips" />
+      <Button fx:id="btnSaveAs" layoutX="255.0" layoutY="415.0" mnemonicParsing="false" onAction="#saveAsVideo" prefHeight="25.0" prefWidth="78.0" text="Save As..." />
+      <Button fx:id="btnAddSource" layoutX="433.0" layoutY="262.0" mnemonicParsing="false" onAction="#addSource" prefHeight="25.0" prefWidth="41.0" text="+ ..." />
+      <Button fx:id="btnRemoveSource" layoutX="474.0" layoutY="262.0" mnemonicParsing="false" onAction="#removeSource" prefHeight="25.0" prefWidth="41.0" text="-" />
+   </children>
+</AnchorPane>
