@@ -4,6 +4,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -161,6 +167,7 @@ public class FXMLController {
     ObservableList<String> sourceList = FXCollections.observableArrayList();
     
     String TEMP = "temp/";
+    //Media m;
     
     @FXML
     void addSource(ActionEvent event) {
@@ -169,9 +176,11 @@ public class FXMLController {
         fileChooser.getExtensionFilters().add(fileFilter);
         fileChooser.setTitle("Choose Source");
         fileChooser.setInitialDirectory(LAST_BROWSED);
-        File selected = fileChooser.showOpenDialog(null);
+        List<File> selected = fileChooser.showOpenMultipleDialog(null);
         if (selected==null) return;
-        sourceList.add(selected.getAbsolutePath().replace('\\', '/'));
+        for (File file : selected) {
+            sourceList.add(file.getAbsolutePath().replace('\\', '/'));
+        }
         listviewSourcesList.setItems(sourceList);
         
     }
@@ -182,9 +191,11 @@ public class FXMLController {
             alert("You need some sources...");
             return;
         }
+        
         Thread vidThread = new Thread() {
             public void run() {
                 try {
+                btnCreate.setDisable(true);
                 System.out.println("poop");
                 YTPGenerator generator = new YTPGenerator(TEMP + "tempoutput.mp4");
                 System.out.println("poop2");
@@ -192,13 +203,15 @@ public class FXMLController {
                 generator.toolBox.FFPROBE = "\"" + tfFFPROBE.getText() + "\"";
                 generator.toolBox.MAGICK = "\"" + tfMAGICK.getText() + "\"";
                 System.out.println("poop3");
-                generator.toolBox.TEMP = "\"" + tfTEMP.getText() + "job_" + System.currentTimeMillis() + "/\"";
+                String jobDir = tfTEMP.getText() + "job_" + System.currentTimeMillis() + "/";
+                generator.toolBox.TEMP = jobDir;
+                new File(jobDir).mkdir();
                 new File(generator.toolBox.TEMP).mkdir();
-                generator.toolBox.SOUNDS = "\"" + tfSOUNDS.getText() + "\"";
-                generator.toolBox.MUSIC = "\"" + tfMUSIC.getText() + "\"";
-                generator.toolBox.RESOURCES = "\"" + tfRESOURCES.getText() + "\"";
-                generator.toolBox.SOURCES = "\"" + tfSOURCES.getText() + "\"";
-System.out.println("poop4");
+                generator.toolBox.SOUNDS = tfSOUNDS.getText();
+                generator.toolBox.MUSIC = tfMUSIC.getText();
+                generator.toolBox.RESOURCES = tfRESOURCES.getText();
+                generator.toolBox.SOURCES = tfSOURCES.getText();
+                System.out.println("poop4");
                 generator.effect1 = cbEffect1.isSelected();
                 generator.effect2 = cbEffect2.isSelected();
                 generator.effect3 = cbEffect3.isSelected();
@@ -210,23 +223,46 @@ System.out.println("poop4");
                 generator.effect9 = cbEffect9.isSelected();
                 generator.effect10 = cbEffect10.isSelected();
                 generator.effect11 = cbEffect11.isSelected();
+                generator.insertTransitionClips = cbUseTransitions.isSelected();
+                
                 System.out.println("poop5");
                 for (String source : sourceList) {
                     generator.addSource("\"" + source + "\"");
                 }
                 System.out.println("poop6");
+                int maxclips = Integer.parseInt(tfClipCount.getText());
                 generator.setMaxClips(Integer.parseInt(tfClipCount.getText()));
                 generator.setMaxDuration(Double.parseDouble(tfMaxStream.getText()));
                 generator.setMinDuration(Double.parseDouble(tfMinStream.getText()));
                 System.out.println("poop7");
+                
+                double timeStarted = System.nanoTime();
+                double elapsedTime = System.nanoTime() - timeStarted;
+
+                
                 generator.go();
                 System.out.println("poop8");
                 while (!generator.done) {
                     barProgress.setProgress(generator.doneCount);
+
+                //    System.out.println((elapsedTime * generator.doneCount ) - elapsedTime);
                 }
+                barProgress.setProgress(1);
+                try {
+                mediaviewVideoPlayer.getMediaPlayer().stop();
+                } catch (Exception ex) {} //if there's no video then don't bother doing anything
                 
+                Thread.sleep(1000);
+                File media = new File(tfTEMP.getText() + "tempoutput.mp4");
+                //System.out.println("AAAAAAAAAAAAAAA" + media.toURL().toString());
+                Media m = new Media(media.toURI().toString());
+                MediaPlayer mm = new MediaPlayer(m);
+                mediaviewVideoPlayer.setMediaPlayer(mm);
+                btnCreate.setDisable(false);
                 } catch (Exception ex) {
-                   alert("Error:\n\n" + ex);
+                   
+                   btnCreate.setDisable(false);
+                   ex.printStackTrace();
                 }
             }
         };
@@ -316,19 +352,21 @@ System.out.println("poop4");
         LAST_BROWSED = selected.getParentFile();
     }
 
-    Media m = new Media("file:///" + System.getProperty("user.dir").replace('\\', '/') + "/" + "outputfile.mp4");
-    MediaPlayer player = new MediaPlayer(m);
+    
+    //MediaPlayer player = new MediaPlayer(m);
     
     @FXML
     void pauseTheVideo(ActionEvent event) {
-        player.pause();
+        try {
+        mediaviewVideoPlayer.getMediaPlayer().pause();
+        } catch (Exception ex) {} //if there's no video then don't bother doing anything
     }
 
     @FXML
     void playTheVideo(ActionEvent event) {
-        
-        mediaviewVideoPlayer.setMediaPlayer(player);
-        player.play();
+        try {
+        mediaviewVideoPlayer.getMediaPlayer().play();
+        } catch (Exception ex) {} //if there's no video then don't bother doing anything
     }
 
     @FXML
@@ -338,12 +376,27 @@ System.out.println("poop4");
 
     @FXML
     void restartTheVideo(ActionEvent event) {
-        player.stop();
+        try {
+        mediaviewVideoPlayer.getMediaPlayer().stop();
+        } catch (Exception ex) {} //if there's no video then don't bother doing anything
     }
 
     @FXML
     void saveAsVideo(ActionEvent event) {
-
+        if (!new File(tfTEMP.getText() + "tempoutput.mp4").exists()) return;
+        FileChooser.ExtensionFilter fileFilter = new FileChooser.ExtensionFilter("Video files (*.mp4)", "*.mp4");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(fileFilter);
+        fileChooser.setTitle("Choose Source");
+        fileChooser.setInitialDirectory(LAST_BROWSED);
+        File selected = fileChooser.showSaveDialog(null);
+        if (selected==null) return;
+        Path temp = Paths.get(tfTEMP.getText() + "tempoutput.mp4");
+        try {
+        Files.copy(temp, selected.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception ex) {
+            alert("Had a problem copying the file.");
+        }
     }
     
     @FXML
@@ -351,6 +404,15 @@ System.out.println("poop4");
         try {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             Desktop.getDesktop().browse(new URI("https://discord.gg/mAwQQt7"));
+        }
+        } catch (Exception ex) {} //how does that even happen
+    }
+
+    @FXML
+    void openArcticZone() {
+        try {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            Desktop.getDesktop().browse(new URI("https://arctic.zone/"));
         }
         } catch (Exception ex) {} //how does that even happen
     }

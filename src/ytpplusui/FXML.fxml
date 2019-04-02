@@ -59,20 +59,20 @@
             <Label layoutX="14.0" layoutY="121.0" text="magick:" underline="true" />
             <TextField fx:id="tfMAGICK" layoutX="19.0" layoutY="138.0" prefHeight="25.0" prefWidth="130.0" text="magick" />
             <Label layoutX="15.0" layoutY="167.0" text="temp dir:" underline="true" />
-            <TextField fx:id="tfTEMP" layoutX="19.0" layoutY="184.0" prefHeight="25.0" prefWidth="130.0" text="temp/" />
+            <TextField fx:id="tfTEMP" disable="true" layoutX="19.0" layoutY="184.0" prefHeight="25.0" prefWidth="130.0" text="temp/" />
             <Label layoutX="14.0" layoutY="209.0" text="sounds dir:" underline="true" />
-            <TextField fx:id="tfSOUNDS" layoutX="19.0" layoutY="226.0" prefHeight="25.0" prefWidth="130.0" text="sounds/" />
+            <TextField fx:id="tfSOUNDS" disable="true" layoutX="19.0" layoutY="226.0" prefHeight="25.0" prefWidth="130.0" text="sounds/" />
             <Label layoutX="14.0" layoutY="251.0" text="music dir:" underline="true" />
-            <TextField fx:id="tfMUSIC" layoutX="19.0" layoutY="268.0" prefHeight="25.0" prefWidth="130.0" text="music/" />
+            <TextField fx:id="tfMUSIC" disable="true" layoutX="19.0" layoutY="268.0" prefHeight="25.0" prefWidth="130.0" text="music/" />
             <Label layoutX="15.0" layoutY="293.0" text="resources dir (for fx):" underline="true" />
-            <TextField fx:id="tfRESOURCES" layoutX="19.0" layoutY="310.0" prefHeight="25.0" prefWidth="130.0" text="resources/" />
+            <TextField fx:id="tfRESOURCES" disable="true" layoutX="19.0" layoutY="310.0" prefHeight="25.0" prefWidth="130.0" text="resources/" />
             <Button fx:id="btnBrowseFFMPEG" layoutX="152.0" layoutY="54.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
             <Button fx:id="btnBrowseFFPROBE" layoutX="152.0" layoutY="96.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
             <Button fx:id="btnBrowseMAGICK" layoutX="152.0" layoutY="138.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
-            <Button fx:id="btnBrowseTEMP" layoutX="152.0" layoutY="184.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
-            <Button fx:id="btnBrowseSOUNDS" layoutX="152.0" layoutY="226.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
-            <Button fx:id="btnBrowseMUSIC" layoutX="152.0" layoutY="268.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
-            <Button fx:id="btnBrowseRESOURCES" layoutX="152.0" layoutY="310.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseTEMP" disable="true" layoutX="152.0" layoutY="184.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseSOUNDS" disable="true" layoutX="152.0" layoutY="226.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseMUSIC" disable="true" layoutX="152.0" layoutY="268.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+            <Button fx:id="btnBrowseRESOURCES" disable="true" layoutX="152.0" layoutY="310.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
             <Button fx:id="btnHelpMeConfig" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpMeConfig" prefHeight="25.0" prefWidth="28.0" text="?" />
             <Button fx:id="btnDiscord" layoutX="12.0" layoutY="409.0" mnemonicParsing="false" onAction="#openDiscord" prefHeight="25.0" prefWidth="177.0" text="Discord">
                <cursor>
@@ -80,12 +80,18 @@
                </cursor>
             </Button>
             <Label alignment="CENTER" layoutX="12.0" layoutY="392.0" prefHeight="17.0" prefWidth="177.0" text="questions? comments? join the" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="12.0" layoutY="375.0" onMouseClicked="#openArcticZone" prefHeight="17.0" prefWidth="177.0" text="http://arctic.zone/" textAlignment="CENTER" underline="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label alignment="CENTER" layoutX="3.0" layoutY="350.0" prefHeight="25.0" prefWidth="193.0" text="EXPECT BUGS/CRASHES/ODDITIES" textAlignment="CENTER" wrapText="true" />
          </children>
       </AnchorPane>
       <ListView fx:id="listviewSourcesList" layoutX="347.0" layoutY="288.0" prefHeight="174.0" prefWidth="200.0" />
       <Label layoutX="363.0" layoutY="267.0" text="Sources" underline="true" />
-      <TextField fx:id="tfSOURCES" layoutX="177.0" layoutY="308.0" prefHeight="25.0" prefWidth="130.0" text="sources/" />
-      <Button fx:id="btnBrowseSOURCES" layoutX="311.0" layoutY="308.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
+      <TextField fx:id="tfSOURCES" disable="true" layoutX="177.0" layoutY="308.0" prefHeight="25.0" prefWidth="130.0" text="sources/" />
+      <Button fx:id="btnBrowseSOURCES" disable="true" layoutX="311.0" layoutY="308.0" mnemonicParsing="false" onAction="#openBrowser" text="..." />
       <CheckBox fx:id="cbUseTransitions" layoutX="40.0" layoutY="312.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" selected="true" text="Insert Transition Clips" />
       <Button fx:id="btnSaveAs" layoutX="255.0" layoutY="415.0" mnemonicParsing="false" onAction="#saveAsVideo" prefHeight="25.0" prefWidth="78.0" text="Save As..." />
       <Button fx:id="btnAddSource" layoutX="433.0" layoutY="262.0" mnemonicParsing="false" onAction="#addSource" prefHeight="25.0" prefWidth="41.0" text="+ ..." />

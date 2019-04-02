@@ -19,7 +19,7 @@ public class MainApp extends Application {
         Pane mainPane = (Pane)FXMLLoader.load(MainApp.class.getResource("FXML.fxml"));
         bigBoy.setScene(new Scene(mainPane));
         bigBoy.show();
-        bigBoy.setTitle("YTP+ [1.0]");
+        bigBoy.setTitle("YTP+ [beta]");
         bigBoy.setResizable(false);
         //THIS SUCKS!
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();

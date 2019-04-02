@@ -1,2 +1,16 @@
 /nbproject/private/
 /build/
+/dist/
+/distr/
+*.mp4
+*.sfk*
+*.bat
+*.exe
+*.txt
+/dist/
+/music/
+/sounds/
+/resources/
+/sources/
+/temp/
+/test/
