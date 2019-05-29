@@ -3,6 +3,7 @@
 /dist/
 /distr/
 *.mp4
+*.webm
 *.sfk*
 *.bat
 *.exe

@@ -171,7 +171,7 @@ public class FXMLController {
     
     @FXML
     void addSource(ActionEvent event) {
-        FileChooser.ExtensionFilter fileFilter = new FileChooser.ExtensionFilter("Video files (*.mp4)", "*.mp4");
+        FileChooser.ExtensionFilter fileFilter = new FileChooser.ExtensionFilter("Video files (*.mp4, *.webm)", "*.mp4", "*.webm");
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(fileFilter);
         fileChooser.setTitle("Choose Source");
