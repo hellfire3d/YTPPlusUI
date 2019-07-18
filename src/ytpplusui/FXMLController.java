@@ -182,7 +182,7 @@ public class FXMLController {
             sourceList.add(file.getAbsolutePath().replace('\\', '/'));
         }
         listviewSourcesList.setItems(sourceList);
-        
+        LAST_BROWSED = selected.get(0).getParentFile();
     }
 
     @FXML
@@ -199,9 +199,9 @@ public class FXMLController {
                 System.out.println("poop");
                 YTPGenerator generator = new YTPGenerator(TEMP + "tempoutput.mp4");
                 System.out.println("poop2");
-                generator.toolBox.FFMPEG = "\"" + tfFFMPEG.getText() + "\"";
-                generator.toolBox.FFPROBE = "\"" + tfFFPROBE.getText() + "\"";
-                generator.toolBox.MAGICK = "\"" + tfMAGICK.getText() + "\"";
+                generator.toolBox.FFMPEG = tfFFMPEG.getText();
+                generator.toolBox.FFPROBE = tfFFPROBE.getText();
+                generator.toolBox.MAGICK = tfMAGICK.getText();
                 System.out.println("poop3");
                 String jobDir = tfTEMP.getText() + "job_" + System.currentTimeMillis() + "/";
                 generator.toolBox.TEMP = jobDir;
@@ -227,7 +227,7 @@ public class FXMLController {
                 
                 System.out.println("poop5");
                 for (String source : sourceList) {
-                    generator.addSource("\"" + source + "\"");
+                    generator.addSource(source);
                 }
                 System.out.println("poop6");
                 int maxclips = Integer.parseInt(tfClipCount.getText());
@@ -244,7 +244,11 @@ public class FXMLController {
                 System.out.println("poop8");
                 while (!generator.done) {
                     barProgress.setProgress(generator.doneCount);
-
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        // Keep going
+                    }
                 //    System.out.println((elapsedTime * generator.doneCount ) - elapsedTime);
                 }
                 barProgress.setProgress(1);
