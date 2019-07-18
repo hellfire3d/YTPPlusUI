@@ -244,7 +244,11 @@ public class FXMLController {
                 System.out.println("poop8");
                 while (!generator.done) {
                     barProgress.setProgress(generator.doneCount);
-
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        // Keep going
+                    }
                 //    System.out.println((elapsedTime * generator.doneCount ) - elapsedTime);
                 }
                 barProgress.setProgress(1);
