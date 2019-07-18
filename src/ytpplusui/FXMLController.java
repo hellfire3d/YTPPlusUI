@@ -182,7 +182,7 @@ public class FXMLController {
             sourceList.add(file.getAbsolutePath().replace('\\', '/'));
         }
         listviewSourcesList.setItems(sourceList);
-        
+        LAST_BROWSED = selected.get(0).getParentFile();
     }
 
     @FXML
