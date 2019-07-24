@@ -304,13 +304,18 @@ public class FXMLController {
     void openBrowser(ActionEvent event) {
         switch (((Control)event.getSource()).getId()) {
             case "btnBrowseFFMPEG":
-                actuallyOpenBrowser(tfFFMPEG);
+                actuallyOpenBrowser(tfFFMPEG,"ffmpeg.exe","exe");
+                String fffile=new File(tfFFMPEG.getText()).getParent().replace('\\', '/');
+                if(new File(fffile+"/ffprobe.exe").exists())
+                {
+                    tfFFPROBE.setText(fffile+"/ffprobe.exe");
+                }
                 break;
             case "btnBrowseFFPROBE":
-                actuallyOpenBrowser(tfFFPROBE);
+                actuallyOpenBrowser(tfFFPROBE,"ffprobe.exe","exe");
                 break;
             case "btnBrowseMAGICK":
-                actuallyOpenBrowser(tfMAGICK);
+                actuallyOpenBrowser(tfMAGICK,"magick.exe","exe");
                 break;
             case "btnBrowseTEMP":
                 actuallyOpenDirBrowser(tfTEMP);
@@ -332,16 +337,31 @@ public class FXMLController {
     
     public File LAST_BROWSED;
     
-    void actuallyOpenBrowser(TextField toChange) {
+    void actuallyOpenBrowser(TextField toChange, String defvalue, String extfilter) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose File");
+            //fileChooser.setInitialFileName(defvalue);
+        if(defvalue!="") {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(defvalue, defvalue));
+        }
+        if(extfilter=="exe") {
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Executable files (*.exe)", "*.exe"));
+        }
         fileChooser.setInitialDirectory(LAST_BROWSED);
         File selected = fileChooser.showOpenDialog(null);
         if (selected==null) return;
         toChange.setText(selected.getAbsolutePath().replace('\\', '/'));
         LAST_BROWSED = selected.getParentFile();
     }
-    
+
+    void actuallyOpenBrowser(TextField toChange) {
+        actuallyOpenBrowser(toChange,"","");
+    }
+    void actuallyOpenBrowser(TextField toChange, String defvalue) {
+        actuallyOpenBrowser(toChange,defvalue,"");
+    }
+
+
     void actuallyOpenDirBrowser(TextField toChange) {
         DirectoryChooser fileChooser = new DirectoryChooser();
         fileChooser.setTitle("Choose File");
